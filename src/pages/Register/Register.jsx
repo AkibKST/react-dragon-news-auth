@@ -8,7 +8,19 @@ const Register = () => {
         e.preventDefault();
         console.log(e.currentTarget);
         const form = new FormData(e.currentTarget);
-        console.log(form.get('email'));
+
+        // Get Name
+        const name = form.get('name');
+
+        // Get Photo
+        const photo = form.get('photo');
+
+        // Get Email
+        const email = form.get('email');
+
+        // Get Password
+        const password = form.get('password');
+        console.log(name, photo, email, password);
     }
     return (
         <div>
