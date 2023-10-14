@@ -14,18 +14,24 @@ const AuthProvider = ({ children }) => {
     // user login ache kina check korar jonno
     const [user, setUser] = useState(null);
 
+    // reload dile harai jai, loading state
+    const [loading, setLoading] = useState(true);
+
     // f ==> Onno jaiga theke email, password anbe auth er sathe call korbe
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     // sign in system
     const signIn = (email, password) =>{
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
     // Log out system
     const logOut = () =>{
+        setLoading(true);
         return signOut(auth);
     }
 
@@ -33,7 +39,8 @@ const AuthProvider = ({ children }) => {
     useEffect( () => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             console.log('user in auth state changed', currentUser)
-            setUser(currentUser)
+            setUser(currentUser);
+            setLoading(false);
         });
         return () => {
             unSubscribe
@@ -43,6 +50,7 @@ const AuthProvider = ({ children }) => {
     // Sob jaiga theke use korar jonno
     const authInfo = {
         user,
+        loading,
         createUser,
         logOut,
         signIn
