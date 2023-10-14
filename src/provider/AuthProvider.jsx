@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import app from "../firebase/firebase.config";
 
 // create context 
@@ -19,10 +19,33 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
+    // sign in system
+    const signIn = (email, password) =>{
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    // Log out system
+    const logOut = () =>{
+        return signOut(auth);
+    }
+
+    // user ke objerve korar jonno
+    useEffect( () => {
+        const unSubscribe = onAuthStateChanged(auth, currentUser => {
+            console.log('user in auth state changed', currentUser)
+            setUser(currentUser)
+        });
+        return () => {
+            unSubscribe
+        }
+    }, [])
+
     // Sob jaiga theke use korar jonno
     const authInfo = {
         user,
-        createUser
+        createUser,
+        logOut,
+        signIn
     }
 
     return (
