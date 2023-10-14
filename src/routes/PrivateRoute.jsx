@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const PrivateRoute = ({children}) => {
 
     // context theke user ke nibo
     const {user, loading} = useContext(AuthContext);
 
-    // where to go or PATH location
+    // PATH location
     const location = useLocation();
-    console.log(location)
+    // console.log(location)
 
     // loading hole snipper dekhabe
     if(loading){
@@ -22,7 +22,8 @@ const PrivateRoute = ({children}) => {
     }
 
     return (
-        <Navigate to="/login"></Navigate>
+        // current location er pathname ta state e set hocche
+        <Navigate state={location.pathname} to="/login"></Navigate>
     );
 };
 
